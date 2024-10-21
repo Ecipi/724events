@@ -29,16 +29,26 @@ describe("When Form is created", () => {
 
 
 describe("When a page is created", () => {
-  it("a list of events is displayed", () => {
-    // to implement
-  })
-  it("a list a people is displayed", () => {
-    // to implement
-  })
-  it("a footer is displayed", () => {
-    // to implement
-  })
-  it("an event card, with the last event, is displayed", () => {
-    // to implement
-  })
+  it("all images in the event section have valid sources", async () => {
+    render(<Home />);
+    
+    const images = await screen.findAllByTestId("card-image-testid");
+    
+    images.forEach(image => {
+      expect(image).toHaveAttribute('src');
+      expect(image.src).toMatch(/\/images\/.+/);
+    });
+  });
+});
+
+describe("When the user navigates the page", () => {
+  it("scrolls to the EventsContainer section when clicking on 'Nos services'", async () => {
+    render(<Home />);
+
+    const servicesLink = screen.getByRole('link', { name: "Nos réalisations" });
+    fireEvent.click(servicesLink);
+
+    const eventsContainer = await screen.findByRole('heading', { name: "Nos réalisations" });
+    expect(eventsContainer).toBeInTheDocument(); 
+  });
 });
